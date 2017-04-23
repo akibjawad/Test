@@ -45,6 +45,7 @@ public class Main extends Application {
     private TableView<file> table=new TableView<>();
     public ObservableList<file> data= FXCollections.observableArrayList();
     private File CurrDir=fsv.getParentDirectory(File.listRoots()[0]);
+    public TilePane tp = new TilePane();
 
 
     @Override
@@ -68,7 +69,7 @@ public class Main extends Application {
         GridPane gp=new GridPane();
         gp.getChildren().add(table);
 
-        TilePane tp = new TilePane();
+
         tp.setPrefTileHeight(50);
         tp.setPrefTileWidth(50);
 
@@ -221,6 +222,8 @@ public class Main extends Application {
 
 
         File fp =fsv.getParentDirectory(File.listRoots()[0]);
+        tileView(fp);
+        /*
         files=fp.listFiles();
         if(files!=null)
         {
@@ -231,11 +234,19 @@ public class Main extends Application {
                 VBox vb=new VBox();
                 vb.getChildren().addAll(imageview,title);
                 tp.getChildren().addAll(vb);
+                vb.setOnMouseClicked(event -> {
+                    if(event.getClickCount()==2)
+                    {
+                        CurrDir=fi;
+
+                    }
+                });
             }
         }
         else
             System.out.println(fp.getName()+" is empty Directory");
-
+            */
+        /*
         tp.setOnMouseClicked((MouseEvent event)->{
             java.lang.Object ob = event.getSource();
             if(ob instanceof VBox)
@@ -261,6 +272,7 @@ public class Main extends Application {
 
             }
         });
+        */
 
 
         viewChoose.setOnMouseClicked((MouseEvent event) ->{
@@ -325,6 +337,29 @@ public class Main extends Application {
                 BufferedImage.TYPE_INT_ARGB);
         jswingIcon.paintIcon(null, bufferedImage.getGraphics(), 0, 0);
         return SwingFXUtils.toFXImage(bufferedImage, null);
+    }
+    public void tileView(File currFile)
+    {
+        tp.getChildren().clear();
+        File[] fileList=currFile.listFiles();
+        if(fileList!=null)
+        {
+            for (File nextfi : fileList) {
+                Label nexttitle = new Label(nextfi.getName());
+                ImageView nextimageview = new ImageView(jswingIconToImage(fsv.getSystemIcon(nextfi)));
+                //TilePane.setAlignment(title, BOTTOM_RIGHT);
+                VBox nextvb=new VBox();
+                nextvb.getChildren().addAll(nextimageview,nexttitle);
+                tp.getChildren().addAll(nextvb);
+                nextvb.setOnMouseClicked(nextevent -> {
+                    if(nextevent.getClickCount()==2)
+                    {
+                        CurrDir=nextfi;
+                        tileView(CurrDir);
+                    }
+                });
+            }
+        }
     }
 
     public static void main(String[] args) {
