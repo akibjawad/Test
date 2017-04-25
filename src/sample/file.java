@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.Image;
 import java.io.File;
+import java.util.Date;
 
 /**
  * Created by Akib Jawad on 19-Apr-17.
@@ -18,18 +19,18 @@ public  class file
 {
     private SimpleStringProperty filename;
     private SimpleLongProperty size;
-    //private SimpleObjectProperty<ic> icon;
-    private Icon icon;
-    private SimpleLongProperty dateModified;
+    private SimpleObjectProperty<Icon> icon;
+    //private Icon icon;
+    private Date dateModified;
     public File f;
 
 
-    public file(File f,String filename, Icon icon, long size, long datemodified)
+    public file(File f,String filename, Icon icon, long size, Date datemodified)
     {
         this.filename=new SimpleStringProperty(filename);
         this.size=new SimpleLongProperty(size);
-        this.icon= icon;
-        this.dateModified = new SimpleLongProperty(datemodified);
+        this.icon= new SimpleObjectProperty<Icon> (icon);
+        this.dateModified = datemodified;
         this.f=f;
 
     }
@@ -41,12 +42,12 @@ public  class file
         return size.get();
     }
 
-    public String getIcon() {
-        return icon.toString();
+    public Icon getIcon() {
+        return icon.get();
     }
 
-    public long getDateModified() {
-        return dateModified.get();
+    public Date getDateModified() {
+        return dateModified;
     }
 
     public void setSize(long size) {
@@ -62,6 +63,6 @@ public  class file
     }   */
 
     public void setDateModified(long dateModified) {
-        this.dateModified.set(dateModified);
+        this.setDateModified(dateModified);
     }
 }
